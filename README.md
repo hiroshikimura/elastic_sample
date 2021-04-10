@@ -1,24 +1,14 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+これは、Ruby on RailsのElastic APMを使うサンプルです。
 
-Things you may want to cover:
+```
+docker-compose up -d
+bundle install
+RAILS_ENV=development bundle exec rails db:create
+RAILS_ENV=development bundle exec rails db:migrate
+RAILS_ENV=development bundle exec rails s
+```
 
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+って感じで動きます。（動いた）<br/>
+必要に応じて、色々とやってください。
