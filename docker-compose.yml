@@ -1,0 +1,65 @@
+version: '2'
+volumes:
+  es-data:
+    driver: local
+services:
+  mysql:
+    image: mysql:5.7
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: elastic_sample
+      MYSQL_PASSWORD: elastic_sample
+    volumes:
+      - ./docker/mysql/data:/var/lib/mysql
+      - ./docker/mysql/sql:/docker-entrypoint-initdb.d
+      - ./docker/mysql/config/my.cnf:/etc/mysql/conf.d/my.cnf
+    ports:
+      - 3306:3306
+  # elastic stacks
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.7.1
+    environment:
+      # シングルノード設定
+      - discovery.type=single-node
+      - bootstrap.memory_lock=true
+      - cluster.name=docker-cluster
+      - cluster.routing.allocation.disk.threshold_enabled=false
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+    volumes:
+      - es-data:/usr/share/elasticsearch
+    ports:
+      - 9200:9200
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+  apm:
+    image: docker.elastic.co/apm/apm-server:7.7.1
+    volumes:
+      # APM用の設定ファイル
+      - ./elastic/apm-server.yml:/usr/share/apm-server/apm-server.yml
+    depends_on:
+      - elasticsearch
+      - kibana
+    ports:
+      - 8200:8200
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.7.1
+    depends_on:
+      - elasticsearch
+    environment:
+      ELASTICSEARCH_URL: http://elasticsearch:9200
+      ELASTICSEARCH_HOSTS: http://elasticsearch:9200
+    ports:
+      - 5601:5601
+  
+  # # railsアプリケーションに設定追加
+  # rails:
+  #   # APM接続用URIを環境変数で設定
+  #   environment:
+  #     ELASTIC_APM_SERVER_URL: http://apm:8200
+  #   # APMコンテナへの接続設定
+  #   depends_on:
+  #     - apm
