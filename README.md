@@ -14,5 +14,5 @@ RAILS_ENV=development bundle exec rails s
 って感じで動きます。（動いた）<br/>
 必要に応じて、色々とやってください。
 
-- rails appのURL
-- kibanaのURL
+- [rails appのURL](http://localhost:3000/books/)
+- [kibanaのURL](http://localhost:5601/)
