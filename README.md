@@ -7,8 +7,9 @@
 ```
 docker-compose up -d
 bundle install
-RAILS_ENV=development bundle exec rails db:create
-RAILS_ENV=development bundle exec rails db:migrate
+bundle exec rails webpacker:install
+bundle exec rails webpacker:compile
+RAILS_ENV=development bundle exec rails db:reset
 RAILS_ENV=development bundle exec rails db:seed
 RAILS_ENV=development bundle exec rails s
 ```
