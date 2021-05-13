@@ -6,4 +6,5 @@ class Book < ApplicationRecord
   scope :with_authors, ->{ includes(:authors).joins(:authors) }
   scope :with_contents, ->{ includes(:contents).joins(:contents) }
   scope :ordered_published, ->{ order(released_at: :asc) }
+  scope :written_by, ->(author){ with_authors.where(authors: author)}
 end
