@@ -35,5 +35,13 @@ module ElasticSample
     # elastic configuration
     config.elastic_apm.service_name = 'ElasticSample'
     config.elastic_apm.config_file = 'config/elastic_apm.yml'
+
+    config.generators do |g|
+      g.test_framework :rspec,
+        view_specs: false,
+        helper_specs: false,
+        routing_specs: false,
+        request_specs: false
+    end
   end
 end
