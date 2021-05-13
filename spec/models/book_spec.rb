@@ -8,8 +8,8 @@ RSpec.describe Book, type: :model do
   end
 
   describe "#book_author" do
-    let(:books){ create_list :book, 10}
-    let(:authors){ create_list :author, 10 }
+    let(:books){ create_list :book, 100}
+    let(:authors){ create_list :author, 100 }
     let!(:books_authors) do
       books.zip(authors).map do |e|
         create :books_author, book: e.first, author: e.last
